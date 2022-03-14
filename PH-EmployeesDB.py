@@ -203,9 +203,32 @@ SELECT ce.emp_no,
 ce.first_name,
 ce.last_name,
 d.dept_name
--- INTO dept_info
+INTO dept_info
 FROM current_emp as ce
 INNER JOIN department_emp AS de
 ON (ce.emp_no = de.emp_no)
 INNER JOIN departments AS d
 ON (de.dept_no = d.dept_no);
+
+-- Tailored List - retirement info for Sale department
+-- Create a new retirement info table with dept_no
+SELECT ri.emp_no,
+ri.first_name,
+ri.last_name,
+de.dept_no
+INTO retirement_info_updated
+FROM retirement_info as ri
+LEFT JOIN department_emp as de
+on(ri.emp_no = de.emp_no);
+
+-- inner join retirement_info_updated and departments
+SELECT riu.emp_no,
+riu.first_name,
+riu.last_name,
+d.dept_name
+INTO retirment_info_sales
+FROM retirement_info_updated AS riu
+INNER JOIN departments AS d
+ON(riu.dept_no = d.dept_no)
+WHERE (d.dept_name = 'Sales')
+ORDER BY riu.dept_no;
