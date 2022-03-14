@@ -226,9 +226,35 @@ SELECT riu.emp_no,
 riu.first_name,
 riu.last_name,
 d.dept_name
-INTO retirment_info_sales
+INTO retirement_info_sales
 FROM retirement_info_updated AS riu
 INNER JOIN departments AS d
 ON(riu.dept_no = d.dept_no)
 WHERE (d.dept_name = 'Sales')
 ORDER BY riu.dept_no;
+
+-- Tailored List - list of employees in both the Sales and Development departments
+-- Create retirement info for Development department
+SELECT riu.emp_no,
+riu.first_name,
+riu.last_name,
+d.dept_name
+INTO retirement_info_development
+FROM retirement_info_updated AS riu
+INNER JOIN departments AS d
+ON(riu.dept_no = d.dept_no)
+WHERE (d.dept_name = 'Development')
+ORDER BY riu.dept_no;
+
+-- seclect employees in both sales and development department
+SELECT  riu.emp_no,
+riu.first_name,
+riu.last_name,
+d.dept_name
+INTO retirement_info_sales_development
+FROM retirement_info_updated AS riu
+INNER JOIN  departments AS d
+ON(riu.dept_no = d.dept_no)
+WHERE(d.dept_name IN ('Sales','Development'))
+ORDER BY riu.dept_no;
+
