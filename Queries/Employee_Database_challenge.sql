@@ -116,9 +116,61 @@ WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 AND (de.to_date = '9999-01-01')
 ORDER BY emp_no;
 
+-- counting employees eligible for mentorship program by title
+SELECT COUNT(title) AS count,
+title
+FROM mentorship_eligibilty
+GROUP BY title
+ORDER BY COUNT(title) DESC;
 
 
+-- Number of employees who are going to retire by department
+SELECT DISTINCT ON (e.emp_no)
+e.emp_no,
+e.first_name,
+e.last_name,
+d.dept_name,
+de.from_date,
+de.to_date
+INTO retirement_department
+FROM employees AS e
+JOIN dept_emp AS de 
+ON (e.emp_no = de.emp_no)
+JOIN departments AS d
+ON de.dept_no = d.dept_no
+WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+AND (de.to_date = '9999-01-01')
+ORDER BY e.emp_no;
+
+select * from retirement_department
+
+SELECT dept_name, count(dept_name) AS "retiring employees"
+FROM retirement_department
+GROUP BY dept_name
+ORDER BY "retiring employees" DESC;
+
+-- Number of employees who eligible for mentorship program by department
+
+SELECT DISTINCT ON(e.emp_no)
+e.emp_no,
+e.first_name,
+e.last_name,
+e.birth_date,
+de.from_date,
+de.to_date,
+d.dept_name
+INTO mentorship_department
+FROM employees AS e
+JOIN dept_emp AS de
+ON e.emp_no = de.emp_no
+JOIN departments as d
+ON de.dept_no = d.dept_no
+WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
+AND (de.to_date = '9999-01-01')
+ORDER BY emp_no;
 
 
-
-
+SELECT dept_name, count(dept_name) AS "No_of_mentors"
+FROM mentorship_department
+GROUP BY dept_name
+ORDER BY "No_of_mentors" DESC;
